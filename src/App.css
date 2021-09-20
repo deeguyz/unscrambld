@@ -1,0 +1,30 @@
+
+body {
+  background-color: #e1e1e1;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+.container{
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  text-align: center;
+  background-color: white;
+  margin: 20px;
+  font-family: "Open Sans", sans-serif;
+
+}
+
+.scrambledWord {
+  color: blue;
+}
+
+.boxGroup {
+  display:flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
