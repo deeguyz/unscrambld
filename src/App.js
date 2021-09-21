@@ -33,8 +33,14 @@ function App() {
     // console.log(wordList, wordString);
   }, [setCounter, counter, word, setWordString]);
 
+  let incrementCounter = () => {
+    setCounter(counter + 1);
+    setWordCounter(0);
+    setWord("");
+  }
 
   console.log(word)
+  
   let box = word.split('').map( char => {
     return (
       <Answer char={char} wordCounter={wordCounter} setWordCounter={setWordCounter}></Answer> 
@@ -61,6 +67,8 @@ function App() {
         <div className="boxGroup">
           {box}
         </div>
+
+        {wordCounter === word.length && (<button onClick={incrementCounter}>con di</button>)}
         
       </div>
     </div>
