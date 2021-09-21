@@ -9,45 +9,46 @@ function App() {
   const [word, setWord] = useState("");
   const [wordString, setWordString] = useState([]);
   const [wordCounter, setWordCounter] = useState(0);
+  const [win, setWin] = useState(false);
+  const [score, setSCore] = useState(0);
 
   useEffect( () => {
-    async function fetchData(){
-      const result = await fetch("https://api.hatchways.io/assessment/sentences/" + counter )
-      const json = await result.json();
-      // console.log(json.data.sentence);
-      setWord(json.data.sentence)
-    }
-
-    fetchData();
-    console.log("word: " + word);
-    let wordList = [];
-    if(word.length !== 0) {
-      wordList = word.split(" ");
-      for(let i = 0; i < wordList.length; i++) {
-        // console.log(wordList[i]);
-        wordList[i] = scramble(wordList[i]);
+    if(counter < 11) {
+      async function fetchData(){
+        const result = await fetch("https://api.hatchways.io/assessment/sentences/" + counter )
+        const json = await result.json();
+        setWord(json.data.sentence)
       }
-      setWordString(wordList.join(" "));
+  
+      fetchData();
+      console.log("word: " + word);
+      let wordList = [];
+      if(word.length !== 0) {
+        wordList = word.split(" ");
+        for(let i = 0; i < wordList.length; i++) {
+          wordList[i] = scramble(wordList[i]);
+        }
+        setWordString(wordList.join(" "));
+      }
     }
-    
-    // console.log(wordList, wordString);
   }, [setCounter, counter, word, setWordString]);
 
   let incrementCounter = () => {
     setCounter(counter + 1);
     setWordCounter(0);
     setWord("");
-  }
+    setSCore(score +1);
 
-  console.log(word)
+    if(counter === 10){
+      setWin(true);
+    }
+  }
   
   let box = word.split('').map( char => {
     return (
       <Answer char={char} wordCounter={wordCounter} setWordCounter={setWordCounter}></Answer> 
     )
   })
-
-  console.log(wordCounter);
 
   return (
     <div className="mainContainer" id="scrambled-word">
@@ -61,15 +62,17 @@ function App() {
           <br/>
           <br/>
           The yellow boxes are meant for spaces
+          <br/>
+          <br/>
+          <b>Score: {score}</b>
         </p>
-        {word}
         <br/>
         <div className="boxGroup">
           {box}
         </div>
 
-        {wordCounter === word.length && (<button onClick={incrementCounter}>con di</button>)}
-        
+        {(wordCounter === word.length) && (score < 10) && (<button onClick={incrementCounter}>Next</button>)}
+        {win && (<p>You Win!</p>)}
       </div>
     </div>
   );
